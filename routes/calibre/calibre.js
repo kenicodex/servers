@@ -10,6 +10,7 @@ const client = new Client({
   });
   client.connect();
 router.get("/items",function(req,res,next){
+    res.send(process.env.DATABASE_URL)
     // res.send("you are on " + req.originalUrl + "\t API");
     // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
     //     if (err) throw err;
