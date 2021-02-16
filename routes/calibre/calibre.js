@@ -9,18 +9,14 @@ const client = new Client({
     }
   });
   client.connect();
-router.get("/items",function(req,res,next){
-    res.send(process.env.DATABASE_URL)
-    // res.send("you are on " + req.originalUrl + "\t API");
-    // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-    //     if (err) throw err;
-    //     for (let row of res.rows) {
-    //       console.log(JSON.stringify(row));
-    //     }
-    //     client.end();
-    //   });
+  client.query('SELECT NOW()', (err, res) => {
+    console.log(err, res);
+    router.get("/items",function(req,response,next){
+        response.send(process.env.DATABASE_URL + "----- " + res)
+    })
+    client.end()
+  })
 
-})
 router.get("/item",function(req,res,next){
     res.send("you are on " + req.originalUrl + "\t API");
 })
