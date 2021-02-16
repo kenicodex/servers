@@ -12,7 +12,7 @@ const client = new Client({
   client.query('SELECT NOW()', (err, res) => {
     console.log(err, res);
     router.get("/items",function(req,response,next){
-        response.send(process.env.DATABASE_URL + "----- " + res)
+        response.send(process.env.DATABASE_URL + "----- " + res.rows[0])
     })
     client.end()
   })
