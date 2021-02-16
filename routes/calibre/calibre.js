@@ -8,14 +8,28 @@ const client = new Client({
       rejectUnauthorized: false
     }
   });
+  const table = `
+  CREATE TABLE users (
+    ID SERIAL PRIMARY KEY,
+    name VARCHAR(30),
+    email VARCHAR(30),
+    password VARCHAR(30),
+    img VARCHAR(50),
+    aboutuser VARCHAR(300) 
+  );`
   client.connect();
-  client.query('SELECT NOW()', (err, res) => {
-    console.log(err, res);
-    router.get("/items",function(req,response,next){
-        response.send(process.env.DATABASE_URL + "----- " + res.rows[0])
+  client.query(table, (err, res) => {
+    router.get('db',(req,res)=>{
+        if (err) {
+            console.error(err);
+            res.send(err)
+            return;
+        }
     })
-    client.end()
-  })
+    console.log('Table is successfully created');
+    res.send("table created");
+    client.end();
+});
 
 router.get("/item",function(req,res,next){
     res.send("you are on " + req.originalUrl + "\t API");
