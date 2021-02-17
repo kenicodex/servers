@@ -10,7 +10,7 @@ const client = new Client({
 });
 router.post("/signup", (req, res) => {
     var get = req.body
-    var insert = `INSERT INTO users (name, email, password, img, aboutuser)
+    var insert = `INSERT INTO users (name, email, password)
     VALUES (${get.Name}, ${get.Email}, ${get.Password})`
     client.query(insert, (req, res) => {
         if (err) {
@@ -26,6 +26,7 @@ router.post("/signup", (req, res) => {
             status: "success",
             message : "Successful signup"
         })
+        client.end();
     })
 })
 router.post("/login", (req, res) => {
