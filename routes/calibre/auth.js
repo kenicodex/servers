@@ -1,18 +1,38 @@
 var express = require('express');
 var router = express.Router();
+var { Client } = require('pg');
 
-router.post("/signup",(req,res)=>{
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+router.post("/signup", (req, res) => {
     var get = req.body
-    console.log(get);
-    res.json({
-        name : get.Name,
+    var insert = `INSERT INTO users (name, email, password, img, aboutuser)
+    VALUES (${get.Name}, ${get.Email}, ${get.Password})`
+    client.query(insert, (req, res) => {
+        if (err) {
+            console.error(err);
+            res.json({
+                status : "error",
+                message : "A error occured"
+            })
+            return;
+        }
+        console.log(get);
+        res.json({
+            status: "success",
+            message : "Successful signup"
         })
+    })
 })
-router.post("/login",(req,res)=>{
+router.post("/login", (req, res) => {
     var get = req.body
     res.json({
-        email : get.Email,
-        password : get.Password
+        email: get.Email,
+        password: get.Password
     })
     console.log(get);
 })
