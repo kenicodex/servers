@@ -8,20 +8,20 @@ const client = new Client({
         rejectUnauthorized: false
     }
 });
-router.post("/signup", (req, res) => {
+router.post("/signup", (req, response) => {
     var get = req.body
     var insert = `INSERT INTO users (name, email, password)
     VALUES (${get.Name}, ${get.Email}, ${get.Password})`
     client.query(insert, (req, res) => {
         if (err) {
             console.error(err);
-            res.json({
+            response.json({
                 status : "error",
                 message : "A error occured"
             })
             return;
         }
-        res.json({
+        response.json({
             status: "success",
             message : "Successful signup"
         })
