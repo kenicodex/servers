@@ -21,7 +21,6 @@ router.post("/signup", (req, res) => {
             })
             return;
         }
-        console.log(get);
         res.json({
             status: "success",
             message : "Successful signup"
