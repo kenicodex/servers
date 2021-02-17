@@ -7,3 +7,6 @@ CREATE TABLE users (
   img VARCHAR(50),
   aboutuser VARCHAR(300) 
 );`
+
+INSERT INTO [users] (name, email, password, img, aboutuser)
+VALUES ([value1], [value2], [value3], [value4], [value5]);

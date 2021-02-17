@@ -28,7 +28,7 @@ app.use('/users', usersRouter);
 var calibreRouter = require('./routes/calibre/calibre');
 var calibreAuth = require('./routes/calibre/auth')
 app.use('/calibre', calibreRouter);
-app.use('/auth', calibreAuth);
+app.use('/calibreauth', calibreAuth);
 
 // catch 404 and forward to error handler
 app.get('/*',function(req,res,next){
