@@ -9,28 +9,28 @@ const client = new Client({
     }
 });
 router.post("/signup", (req, response) => {
-    var get = req.body
-    var insert = `INSERT INTO users (name, email, password)
-    VALUES (${get.Name}, ${get.Email}, ${get.Password})`
-    client.query(insert, (req, res) => {
-        if (err) {
-            console.error(err);
+    var get = req.body, insert = `INSERT INTO users (name, email, password) VALUES ('${get.Name}', '${get.Email}', '${get.Password}')`
+    try {
+        client.query(insert, (req, res) => {
+            // check if user exist 
             response.json({
-                status : "error",
-                message : "A error occured"
+                status: "success",
+                message: "Successful Sign up"
             })
-            return;
-        }
-        response.json({
-            status: "success",
-            message : "Successful signup"
+            console.log(insert);
+            client.end();
         })
-        client.end();
-    })
+    } catch (error) {
+        response.status(201).json({
+            status: "error",
+            message: "Server Error! Please try again or contact us : " + error
+        })
+        console.log(error);
+    }
 })
 router.post("/login", (req, res) => {
     var get = req.body
-    res.json({
+    res.status(208).json({
         email: get.Email,
         password: get.Password
     })
