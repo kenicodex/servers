@@ -18,39 +18,44 @@ router.post("/signup", (req, response) => {
                 status: "error",
                 message: "A user with this email already exist"
             })
-        } else {
-            client.query(insert, (err, res) => {
-                if (err) {
-                    response.json({
-                        status: "error",
-                        message: err.message
-                    })
-                }
-                response.json({
-                    status: "success",
-                    message: "Successful Sign up " + res.rowCount
-                })
-                client.end();
-            })
         }
+        client.query(insert, (err, res) => {
+            if (err) {
+                response.json({
+                    status: "error",
+                    message: "Try again an error occured"
+                })
+            }
+            response.json({
+                status: "success",
+                message: "Successful Sign up " + res.rowCount
+            })
+            client.end();
+        })
         client.end()
     })
-
 })
 router.post("/login", (req, response) => {
     var get = req.body
     var query = `SELECT * FROM users WHERE email = '${get.Email}' AND password = '${get.Password}'`
-    client.query("", (err, res) => {
+    client.query(query, (err, res) => {
         if (err) {
             response.status(404).json({
                 status: 'error',
                 message: "error : " + err
             })
+        }
+        if (res.rowCount == 1) {
             response.status(208).json({
                 status: 'success',
-                message:'successfully signed in'
+                message: 'successfully signed in' + res.rows[0]
             })
         }
+        response.json({
+            status : "error",
+            message : "Wrong email or password"
+        })
+        client.end();
     })
 })
 module.exports = router;
