@@ -41,22 +41,22 @@ router.post("/login", (req, response) => {
     var get = req.body
     var query = `SELECT * FROM users WHERE email = '${get.Email}' AND password = '${get.Password}'`
     client.query(query, (err, res) => {
-        if (err) {
-            response.status(404).json({
-                status: 'error',
-                message: "error : " + err.message
-            })
-        }
-        if (res.rowCount == 1) {
+        // if (err) {
+        //     response.status(404).json({
+        //         status: 'error',
+        //         message: "error : " + err.message
+        //     })
+        // }
+        // if (res.rowCount == 1) {
             response.status(208).json({
                 status: 'success',
-                message: 'successfully signed in' + res.rows[0]
+                message: 'successfully signed in' + res.rows
             })
-        }
-        response.json({
-            status: "error",
-            message: "Invalid email or password"
-        })
+        // }
+        // response.json({
+        //     status: "error",
+        //     message: "Invalid email or password"
+        // })
         client.end();
     })
 })

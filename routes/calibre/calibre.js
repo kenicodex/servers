@@ -23,7 +23,7 @@ const client = new Client({
 });
 
 router.get("/item",function(req,res,next){
-    res.send("you are on " + req.originalUrl + "\t API" + "--------- conn \n " + process.env.DATABASE_URL);
+    res.send("you are on " + req.originalUrl + "\t API");
 })
 router.get("/add",function(req,res,next){
     res.send("you are on " + req.originalUrl + "\t API");
