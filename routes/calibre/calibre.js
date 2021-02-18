@@ -10,17 +10,16 @@ const client = new Client({
   });
   const table = "SELECT * FROM users "
   client.connect();
-  router.get('/db',(req,resp)=>{
+  router.get('/users',(req,resp)=>{
   client.query(table, (err, res) => {
         if (err) {
             console.error(err);
             resp.send(err)
             return;
         }
+        resp.json(res.rows);
+        client.end();
     })
-    // console.log('Table is successfully created');
-    resp.json(res.rows);
-    client.end();
 });
 
 router.get("/item",function(req,res,next){
