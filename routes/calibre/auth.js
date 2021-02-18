@@ -8,31 +8,38 @@ const client = new Client({
         rejectUnauthorized: false
     }
 });
-client.connect()
+// client.connect()
 router.post("/signup", (req, response) => {
     var get = req.body, insert = `INSERT INTO users (name, email, password) VALUES ('${get.Name}', '${get.Email}', '${get.Password}')`
-    try {
-        client.query(insert, (err, res) => {
-            if(err){
+    const query = {
+        name: 'fetch-user',
+        text: 'SELECT * FROM users WHERE email = $1',
+        values: [get.Email],
+      }
+    client.query(query, (err, res) => {
+        if (res.rowCount > 0) {
+                    response.json({
+                        status: "error",
+                        message:"A user with this email already exist"
+                    })
+        } else {
+            client.query(insert, (err, res) => {
+                if (err) {
+                    response.json({
+                        status: "error",
+                        message: err.message
+                    })
+                }
                 response.json({
-                    status: "error",
-                    message: err.message
+                    status: "success",
+                    message: "Successful Sign up " + res.rowCount 
                 })
-            }
-            response.json({
-                status: "success",
-                message: "Successful Sign up " + res.rowCount + " " + res.fields
+                client.end();
             })
-            // console.log(insert);
-            client.end();
-        })
-    } catch (error) {
-        response.status(201).json({
-            status: "error",
-            message: "Server Error! Please try again or contact us : " + error
-        })
-        console.log(error);
-    }
+        }
+        client.end()
+    })
+
 })
 router.post("/login", (req, res) => {
     var get = req.body
