@@ -25,12 +25,11 @@ router.post("/signup", (req, response) => {
                         status: "error",
                         message: "Try again an error occured"
                     })
-                }else {
-                    
-                response.json({
-                    status: "success",
-                    message: "Successful Sign up " + res.rowCount
-                })
+                } else {
+                    response.json({
+                        status: "success",
+                        message: "Successful Sign up " + res.rowCount
+                    })
                 }
                 client.end();
             })
