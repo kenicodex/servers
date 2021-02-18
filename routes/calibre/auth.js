@@ -8,16 +8,16 @@ const client = new Client({
         rejectUnauthorized: false
     }
 });
-// client.connect()
+client.connect()
 router.post("/signup", (req, response) => {
     var get = req.body, insert = `INSERT INTO users (name, email, password) VALUES ('${get.Name}', '${get.Email}', '${get.Password}')`
     const query = `SELECT * FROM users WHERE email = '${get.Email}'`
     client.query(query, (err, res) => {
         if (res.rowCount > 0) {
-                    response.json({
-                        status: "error",
-                        message:"A user with this email already exist"
-                    })
+            response.json({
+                status: "error",
+                message: "A user with this email already exist"
+            })
         } else {
             client.query(insert, (err, res) => {
                 if (err) {
@@ -28,7 +28,7 @@ router.post("/signup", (req, response) => {
                 }
                 response.json({
                     status: "success",
-                    message: "Successful Sign up " + res.rowCount 
+                    message: "Successful Sign up " + res.rowCount
                 })
                 client.end();
             })
@@ -37,12 +37,20 @@ router.post("/signup", (req, response) => {
     })
 
 })
-router.post("/login", (req, res) => {
+router.post("/login", (req, response) => {
     var get = req.body
-    res.status(208).json({
-        email: get.Email,
-        password: get.Password
+    var query = `SELECT * FROM users WHERE email = '${get.Email}' AND password = '${get.Password}'`
+    client.query("", (err, res) => {
+        if (err) {
+            response.status(404).json({
+                status: 'error',
+                message: "error : " + err
+            })
+            response.status(208).json({
+                status: 'success',
+                message:'successfully signed in'
+            })
+        }
     })
-    console.log(get);
 })
 module.exports = router;
