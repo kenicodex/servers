@@ -8,16 +8,22 @@ const client = new Client({
         rejectUnauthorized: false
     }
 });
+client.connect()
 router.post("/signup", (req, response) => {
     var get = req.body, insert = `INSERT INTO users (name, email, password) VALUES ('${get.Name}', '${get.Email}', '${get.Password}')`
     try {
-        client.query(insert, (req, res) => {
-            // check if user exist 
+        client.query(insert, (err, res) => {
+            if(err){
+                response.json({
+                    status: "error",
+                    message: err.message
+                })
+            }
             response.json({
                 status: "success",
-                message: "Successful Sign up"
+                message: "Successful Sign up " + res.rowCount + " " + res.fields
             })
-            console.log(insert);
+            // console.log(insert);
             client.end();
         })
     } catch (error) {
