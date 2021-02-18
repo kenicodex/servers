@@ -18,20 +18,21 @@ router.post("/signup", (req, response) => {
                 status: "error",
                 message: "A user with this email already exist"
             })
-        }
-        client.query(insert, (err, res) => {
-            if (err) {
+        } else {
+            client.query(insert, (err, res) => {
+                if (err) {
+                    response.json({
+                        status: "error",
+                        message: "Try again an error occured"
+                    })
+                }
                 response.json({
-                    status: "error",
-                    message: "Try again an error occured"
+                    status: "success",
+                    message: "Successful Sign up " + res.rowCount
                 })
-            }
-            response.json({
-                status: "success",
-                message: "Successful Sign up " + res.rowCount
+                client.end();
             })
-            client.end();
-        })
+        }
         client.end()
     })
 })
@@ -42,7 +43,7 @@ router.post("/login", (req, response) => {
         if (err) {
             response.status(404).json({
                 status: 'error',
-                message: "error : " + err
+                message: "error : " + err.message
             })
         }
         if (res.rowCount == 1) {
@@ -52,8 +53,8 @@ router.post("/login", (req, response) => {
             })
         }
         response.json({
-            status : "error",
-            message : "Wrong email or password"
+            status: "error",
+            message: "Invalid email or password"
         })
         client.end();
     })
