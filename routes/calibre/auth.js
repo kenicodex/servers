@@ -11,11 +11,7 @@ const client = new Client({
 // client.connect()
 router.post("/signup", (req, response) => {
     var get = req.body, insert = `INSERT INTO users (name, email, password) VALUES ('${get.Name}', '${get.Email}', '${get.Password}')`
-    const query = {
-        name: 'fetch-user',
-        text: 'SELECT * FROM users WHERE email = $1',
-        values: [get.Email],
-      }
+    const query = `SELECT * FROM users WHERE email = '${get.Email}'`
     client.query(query, (err, res) => {
         if (res.rowCount > 0) {
                     response.json({
